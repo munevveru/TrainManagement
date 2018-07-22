@@ -1,246 +1,159 @@
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import java.io.File;
-import java.io.FileWriter;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 
-public class AdminAddTrain extends JPanel {
-	
-	Menu menu;
-	private static Trains trainList;
+
+public class AdminAddRoute extends JPanel {
 	private JPanel first;
 	private JPanel center;
 	private JPanel last;
 	private JPanel centerLabels;
-	private JPanel centerFields;
+	private JPanel centerBoxes;
 	private JPanel total;
 	
-	private JLabel addTrain;
-	private JLabel trainName;
-	private JLabel numberOfCompartments;
-	private JLabel seatsInEveryCompartment;
-	private JLabel standartTicketPrice;
-	private JLabel businessTicketPrice;
-	private JLabel approved;
-	
-	private JTextField trainNameField;
-	private JTextField numberOfCompartmentsField;
-	private JTextField seatsField;
-	private JTextField standartPriceField;
-	private JTextField businessPriceField;
-	
-	private JButton saveButton = new JButton("Save");
-	private JButton editTrainButton = new JButton("Edit Trains");
+	private JButton saveRouteButton;
+	private JButton editRouteButton;
 	private JButton backHomeButton;
-
 	
-	public AdminAddTrain()
+	private JLabel header;
+	private JLabel approval;
+	private JLabel availableTrainLabel;
+	private JLabel leavingDepLabel;
+	private JLabel arrivingDepLabel;
+	private JLabel leavingTimeLabel;
+	private JLabel arrivingTimeLabel;
+	
+	private JComboBox chooseTrain;
+	private JComboBox leavingDep;
+	private JComboBox arrivingDep;
+	private JComboBox leavingTime;
+	private JComboBox arrivingTime;
+	
+	public AdminAddRoute()
 	{
-		setLayout(new GridLayout(3,1));
 		createComponents();
-	
 		
 	}
 	
 	public void createComponents()
 	{
-		//panels
 		first = new JPanel();
 		center = new JPanel(new GridLayout(1,2));
 		last = new JPanel(new GridLayout(3,1));
 		centerLabels = new JPanel(new GridLayout(5,1));
-		centerFields = new JPanel(new GridLayout(5,1));
-		
+		centerBoxes = new JPanel(new GridLayout(5,1));
 		total = new JPanel(new GridLayout(3,1));
 		
-		//labels
-		addTrain = new JLabel("ADD TRAIN");
-		trainName = new JLabel("Train Name");
-		numberOfCompartments = new JLabel("Number of Compartments");
-		seatsInEveryCompartment = new JLabel("Seats (in every compartment)");
-		standartTicketPrice = new JLabel("Standart Ticket Price");
-		businessTicketPrice = new JLabel("Business Ticket Price");
-		approved = new JLabel("Train is added succesfully.");
-		
-		//buttons
-		saveButton = new JButton("Save");
-		editTrainButton = new JButton("Edit Trains");
+		saveRouteButton = new JButton("Save");
+		editRouteButton = new JButton("Edit Route");
 		backHomeButton = new JButton("Back to Home Page");
 		
-		//text fields
-		trainNameField = new JTextField("Train Name");
-		numberOfCompartmentsField = new JTextField("Number Of Compartments");
-		seatsField = new JTextField("Seats (in every compartment)");
-		standartPriceField = new JTextField("Standart Ticket Price");
-		businessPriceField = new JTextField("Business Ticket Price");
+		header = new JLabel("ADD ROUTE");
+		approval = new JLabel("Route is added succesfully.");
 		
-		
-		trainNameField.addFocusListener(new focuslistener());
-		numberOfCompartmentsField.addFocusListener(new focuslistener());
-		seatsField.addFocusListener(new focuslistener());
-		standartPriceField.addFocusListener(new focuslistener());
-		businessPriceField.addFocusListener(new focuslistener());
-		
-		centerFields.add(trainNameField);
-		centerFields.add(numberOfCompartmentsField);
-		centerFields.add(seatsField);
-		centerFields.add(standartPriceField);
-		centerFields.add(businessPriceField);
-		
-		trainNameField.setCaretColor(Color.LIGHT_GRAY);
-		numberOfCompartmentsField.setCaretColor(Color.LIGHT_GRAY);
-		seatsField.setCaretColor(Color.LIGHT_GRAY);
-		standartPriceField.setCaretColor(Color.LIGHT_GRAY);
-		businessPriceField.setCaretColor(Color.LIGHT_GRAY);
+		availableTrainLabel = new JLabel("Available train");
+		leavingDepLabel = new JLabel("Leaving department");
+		arrivingDepLabel = new JLabel("Arriving department");
+		leavingTimeLabel  = new JLabel("Leaving time");
+		arrivingTimeLabel = new JLabel("Arriving time");
 		
 		
 		
-		centerLabels.add(trainName);
-		centerLabels.add(numberOfCompartments);
-		centerLabels.add(seatsInEveryCompartment);
-		centerLabels.add(standartTicketPrice);
-		centerLabels.add(businessTicketPrice);
 		
-		//listener
-		saveButton.addActionListener(new listener());
-		backHomeButton.addActionListener(new listener());
-		editTrainButton.addActionListener(new listener());
 		
-		first.add(addTrain);
+		
+		chooseTrain = new JComboBox(viewer.trainNames.toArray());
+		leavingDep = new JComboBox(viewer.stationNames.toArray());
+		arrivingDep = new JComboBox(viewer.stationNames.toArray());
+		leavingTime = new JComboBox(viewer.times.toArray());
+		arrivingTime = new JComboBox(viewer.times.toArray());
+		
+		chooseTrain.setToolTipText("Choose an available train");
+		leavingDep.setToolTipText("Choose an leaving department");
+		arrivingDep.setToolTipText("Choose an arriving department");
+		leavingTime.setToolTipText("Choose a leaving time");
+		arrivingTime.setToolTipText("Choose an arriving time");
+		
+		centerLabels.add(availableTrainLabel);
+		centerLabels.add(leavingDepLabel);
+		centerLabels.add(arrivingDepLabel);
+		centerLabels.add(leavingTimeLabel);
+		centerLabels.add(arrivingTimeLabel);
+		
+		centerBoxes.add(chooseTrain);
+		centerBoxes.add(leavingDep);
+		centerBoxes.add(arrivingDep);
+		centerBoxes.add(leavingTime);
+		centerBoxes.add(arrivingTime);
+		
+		first.add(header);
 		center.add(centerLabels);
-		center.add(centerFields);
-		last.add(saveButton);
-		last.add(editTrainButton);
+		center.add(centerBoxes);
+		
+		saveRouteButton.addActionListener(new listener());
+		editRouteButton.addActionListener(new listener());
+		backHomeButton.addActionListener(new listener());
+		
+		last.add(saveRouteButton);
+		last.add(editRouteButton);
 		last.add(backHomeButton);
 		
-		setLayout(new BorderLayout());
 		total.add(first);
 		total.add(center);
 		total.add(last);
-		
+	
+		setLayout(new BorderLayout());
 		add(total);
 	}
 	
-	public class focuslistener implements FocusListener {
-
-		@Override
-
-		public void focusGained(FocusEvent e) {
-
-			if (e.getSource() ==  trainNameField) {
-
-				trainNameField.setText("");
-
-			}
-			else if ( e.getSource() == numberOfCompartmentsField) {
-
-				numberOfCompartmentsField.setText("");
-
-			}
-			else if( e.getSource() == seatsField)
-			{
-
-				seatsField.setText("");
-
-			}
-			
-			else if ( e.getSource() == standartPriceField)
-			{
-				standartPriceField.setText("");
-			}
-			
-			else if ( e.getSource() == businessPriceField)
-			{
-				businessPriceField.setText("");
-			}
-
-		}
-		
-
-
-		@Override
-
-		public void focusLost(FocusEvent e) {
-
-			// TODO Auto-generated method stub
-
-		}
-		
-	}
-	
-	public String getTrainName()
+	public Train getTrain()
 	{
-		return trainNameField.getText();
+		return (Train)(chooseTrain.getSelectedItem());
 	}
 	
-	public int getCompartmentNumber()
+	public Station getLeavStation()
 	{
-		int compartmentNumber = Integer.parseInt(numberOfCompartmentsField.getText());
-		return compartmentNumber;
+		return (Station) leavingDep.getSelectedItem();
 	}
 	
-	public int getSeatNumber()
+	public Station getArrStation()
 	{
-		int seatNumber = Integer.parseInt(seatsField.getText());
-		return seatNumber;
+		return (Station) arrivingDep.getSelectedItem();
 	}
 	
-	public double getStandartPrice()
+	public String getLeavTime()
 	{
-		double standartPrice = Double.parseDouble(standartPriceField.getText());
-		return standartPrice;
+		return (String) leavingTime.getSelectedItem();
 	}
 	
-	public double getBusinessPrice()
+	public String getArrTime()
 	{
-		double businessPrice = Double.parseDouble( businessPriceField.getText());
-		return businessPrice;
+		return (String) arrivingTime.getSelectedItem();
 	}
 	
-//	public void getTrainList()
-//	{
-//		for(int i = 0; i < trains.size(); i++)
-//		{
-//			if (trains.get(i) instanceof Train)
-//			{
-//				System.out.println(((Train)trains.get(i)).getName());
-//			}
-//		}
-//	}
 	
 	public class listener implements ActionListener
 	{
 		public void actionPerformed(ActionEvent e)
 		{
-			if ( e.getSource() == saveButton ) {
-				Train newTrain = new Train(getTrainName(), getCompartmentNumber(), getSeatNumber(), getStandartPrice(), getBusinessPrice());	
-				viewer.trains.add(newTrain);
-				viewer.trainNames.add(newTrain.getName());
-				
-				AdminAddTrain newAdminAddTrainPage = new AdminAddTrain();
-				removeAll();
+			if ( e.getSource() == saveRouteButton ) {
+				Route newRoute = new Route(getTrain(), getLeavStation(), getArrStation(), getLeavTime(), getArrTime() );	
+				viewer.routes.add(newRoute);
 
-				add(newAdminAddTrainPage);
+				AdminAddRoute newAdminAddRoutePage = new AdminAddRoute();
+			
+				removeAll();
+				add(newAdminAddRoutePage);
 				revalidate();
 				repaint();
 			} 
-			
-		
 			else if(e.getSource() == backHomeButton) {
 				AdminHome adminHomePage = new AdminHome();
 				
@@ -250,14 +163,12 @@ public class AdminAddTrain extends JPanel {
 				repaint();
 			}
 			
-			else if (e.getSource() == editTrainButton)
-			{
-				///edit page
-			}
+		
+//			 if {
+//				//EDIT PANELI OLUŞTUR SONRA YAP 
+//			}
 		}
 	}
-
-
-
-
+	
+	
 }
